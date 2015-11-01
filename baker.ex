@@ -30,14 +30,12 @@ defmodule Customer do
   def loop(waitNum, fibNum) do
     receive do
       {:wait} ->
-        IO.puts("did something #{waitNum}")
-        IO.puts("here's fib #{fibNum}")
-        IO.puts("start!")
-        #wait fro waitNum the send {manager self() fibNum}
-        :timer.sleep(waitNum * 1000) ##to make seconds
-        IO.puts("done!")
-        #loop(num-1)
-        #send(thisGuy, {:wait, thisGuy, num - 1})
+        IO.puts("Waiting for #{waitNum} than calling fib on #{fibNum}")
+        #wait fro waitNum seconds
+        :timer.sleep(waitNum * 1000)
+        #send(:manager, {:helpme self() fibNum})
+      {:done, result} ->
+        IO.puts("I'm done! The result was #{result}!")
     end
   end
 end
