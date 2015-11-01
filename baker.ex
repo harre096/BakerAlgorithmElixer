@@ -1,11 +1,16 @@
-#https://gist.github.com/kyanny/2026028
+#to run in iex:
+#(1)> c "baker.ex"
+#(1)> Baker.bake()
+
+
 defmodule Fib do
   def fib(0) do 0 end
   def fib(1) do 1 end
   def fib(n) do fib(n-1) + fib(n-2) end
 end
-
-IO.puts Fib.fib(10)
+#Fib from: https://gist.github.com/kyanny/2026028
+#Test Fib
+#IO.puts Fib.fib(10)
 
 defmodule Random do
   def init do
@@ -16,14 +21,13 @@ defmodule Random do
   end
 end
 
-Random.init
-list = Enum.to_list(10..30)
-IO.puts Random.pick_element(list)
+
+
 
 defmodule Customer do
   def create() do
     waitNum = Random.pick_element(Enum.to_list(1..10))
-    fibNum = Random.pick_element(Enum.to_list(10..60))
+    fibNum = Random.pick_element(Enum.to_list(10..40))
     thisGuy = spawn(__MODULE__, :loop, [waitNum, fibNum])
   end
   def start(customer) do
@@ -55,6 +59,7 @@ defmodule Server do
   def loop do
     receive do
       {:calculate, customer, fibNum} ->
+        IO.puts("Server #{inspect self} is now serving customer #{inspect customer}!!")
         result = Fib.fib(fibNum)
         send(customer, {:done, result})
         send(:manager, {:readyToServe, self()})
@@ -106,9 +111,12 @@ defmodule Manager do
   end
 end
 
+
+#The "main"
 defmodule Baker do
-  def init() do
-    Process.delete(:manager)
+  def bake() do
+    Process.delete(:manager) #Delete old manager if one still exists
+    Random.init
     Manager.create()
     server = Server.create()
     server = Server.create()
