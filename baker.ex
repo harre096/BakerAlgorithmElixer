@@ -104,16 +104,6 @@ defmodule Manager do
         handleRequest([], [c] ++ customers ++ [newCustomer])
     end
   end
-  def handleRequest([s|servers], [c|customers]) do
-    IO.puts("We are in the case with two full arrays, this might not work")
-    receive do
-      {:readyToServe, newServer} ->
-        handleRequest([s] ++ servers ++ [newServer], [c] ++ customers)
-      {:helpMe, newCustomer} ->
-        send(newCustomer, {:talkToHim, s})
-        handleRequest([s] ++ servers, [c] ++ customers ++ [newCustomer])
-    end
-  end
 end
 
 defmodule Baker do
