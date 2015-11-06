@@ -1,0 +1,7 @@
+receive do
+  {:wait, thisGuy, num} ->
+    IO.puts("did something #{num}")
+    #loop(num-1)
+    send(thisGuy, {:wait, thisGuy, num - 1})
+  end
+end
