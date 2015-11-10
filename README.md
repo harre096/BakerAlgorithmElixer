@@ -13,7 +13,7 @@ We generate a series of servers and customers. Then we have a manager who coordi
 
 ####To run the distrubuted version in iex:
 ######Start iex on the box (aka host) of your choice, repeat this step for each box
-#####(1)> iex --sname *nameOfNode* --cookie frogs --erl "-kernel inet_dist_listen_min 60001 inet_dist_listen_max 60100" bakerDist.ex
+#####(1)> iex --sname *nameOfNode* --cookie frogs --erl "-kernel inet_dist_listen_min *lowport* inet_dist_listen_max *highport*" bakerDist.ex
 ######Then connect the nodes using things using Node.connect :'nodeName@hostName'
 #####(2)> Node.connect :'node1@bebop'
 #####(3)> Node.connect :'node2@macross'
