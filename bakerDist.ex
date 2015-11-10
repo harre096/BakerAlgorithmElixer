@@ -28,6 +28,7 @@ defmodule Customer do
   def create(host) do
     waitNum = Random.pick_element(Enum.to_list(1..10))
     fibNum = Random.pick_element(Enum.to_list(10..40))
+    IO.puts("Customer being made at: #{host}")
     thisGuy = Node.spawn(host, __MODULE__, :loop, [waitNum, fibNum])
   end
   def start(customer) do
@@ -52,8 +53,9 @@ defmodule Customer do
 end
 
 defmodule Server do
-  def create() do
-    server = spawn(__MODULE__, :loop, [])
+  def create(host) do
+    server = Node.spawn(host,__MODULE__, :loop, [])
+    IO.puts("Server being made at: #{host}")
     send(:global.whereis_name(:manager), {:readyToServe, server})
   end
   def loop do
@@ -113,21 +115,24 @@ end
 
 #The "main"
 defmodule Baker do
-  def bake() do
+  def bake(numOfServers, numOfCustomers) do
     #Process.delete(:manager) #Delete old manager if one still exists
     Random.init
-    Manager.create()
-    server = Server.create()
-    server = Server.create()
-    server = Server.create()
-    create_customers(1, [:first@acrylic], 1)
+    Manager.create() #Adding a new node after manager has initialzed requires :manager's node to be restarted
+    #create_customers: number of customers, list of hosts -> create x customers with random host form list
+    create_servers(numOfServers, Node.list ++ [Node.self])
+    create_customers(numOfCustomers, Node.list ++ [Node.self])
   end
-  def create_customers(num, hosts, hostLength) do
+  def create_customers(num, hosts) do
     if num > 0 do
-      index = :crypto.rand_uniform(0, hostLength)
-      host = Enum.at(hosts, index)
-      Customer.start(Customer.create(host))
-      create_customers(num - 1, hosts, hostLength)
+      Customer.start(Customer.create(Random.pick_element(hosts)))
+      create_customers(num - 1, hosts)
+    end
+  end
+  def create_servers(num, hosts) do
+    if num > 0 do
+      Server.create(Random.pick_element(hosts))
+      create_servers(num - 1, hosts)
     end
   end
 end
