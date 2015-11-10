@@ -3,6 +3,10 @@
 
 Thomas Harren and Brennan Gensch created this project to try out Elixer by solving the Baker's Algorthim.
 
+We generate a series of servers and customers. Then we have a manager who coordinates the serving, which consists of having the server caluculte fibonacci for the customer. Problem description here: https://docs.google.com/document/d/1R-SpUEgKPDznJjozv5kdUNWxznwx-wSYnwo3CNqn7UA/edit
+
+<hr>
+
 ####To run the simple version in iex:
 #####(1)> c "baker.ex"
 #####(2)> Baker.bake()
@@ -17,4 +21,3 @@ Thomas Harren and Brennan Gensch created this project to try out Elixer by solvi
 ######Finally, run the program from one of the nodes
 #####(4)> Node.connectBaker.bake(10, 100) #arguments: number of servers, number of customers
 
-We generate a series of servers and customers. Then we have a manager who coordinates the serving, which consists of having the server caluculte fibonacci for the customer. Problem description here: https://docs.google.com/document/d/1R-SpUEgKPDznJjozv5kdUNWxznwx-wSYnwo3CNqn7UA/edit
