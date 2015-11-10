@@ -11,7 +11,7 @@ We generate a series of servers and customers. Then we have a manager who coordi
 #####(1)> c "baker.ex"
 #####(2)> Baker.bake()
 
-####To run the in distrubuted version in iex:
+####To run the distrubuted version in iex:
 ######Start iex on the box (aka host) of your choice, repeat this step for each box
 #####(1)> iex --sname *nameOfNode* --cookie frogs --erl "-kernel inet_dist_listen_min 60001 inet_dist_listen_max 60100" bakerDist.ex
 ######Then connect the nodes using things using Node.connect :'nodeName@hostName'
